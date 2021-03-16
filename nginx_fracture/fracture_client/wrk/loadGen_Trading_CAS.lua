@@ -60,7 +60,7 @@ table.insert(casAttacks, {
 
 -- Alarms
 table.insert(casAttacks, {
-    weight = 4,
+    weight = 2,
     method = 'POST',
     contentType = 'application/json',
     path = '/',
@@ -68,7 +68,7 @@ table.insert(casAttacks, {
 })
 
 table.insert(casAttacks, {
-    weight = 4,
+    weight = 1,
     method = 'POST',
     contentType = 'application/json',
     path = '/',
@@ -76,7 +76,7 @@ table.insert(casAttacks, {
 })
 
 table.insert(casAttacks, {
-    weight = 4,
+    weight = 1,
     method = 'POST',
     contentType = 'application/xml',
     path = '/',
@@ -84,7 +84,7 @@ table.insert(casAttacks, {
 })
 
 table.insert(casAttacks, {
-    weight = 4,
+    weight = 1,
     method = 'POST',
     contentType = 'application/xml',
     path = '/',
