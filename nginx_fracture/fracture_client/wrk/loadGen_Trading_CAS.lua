@@ -1,23 +1,24 @@
 math.randomseed(os.time())
 
 function curvePattern(obj)
-    a=0.4 --# width - Width GE 1 provides deminishing returns for graphing
-    b=2 --# Slope
-    c=0.2 --# Constant - Constant GE 1 flattens the graph
-    max=30
-    min=5
+    a = 0.4 -- # width - Width GE 1 provides deminishing returns for graphing
+    b = 2 -- # Slope
+    c = 0.2 -- # Constant - Constant GE 1 flattens the graph
+    max = 30
+    min = 5
 
-    local offset = (os.time() + 3600 ) % 86400
-    local offsetReduced = offset/86400
+    local offset = (os.time() + 3600) % 86400
+    local offsetReduced = offset / 86400
 
-    local variation = os.time()%3600
+    local variation = os.time() % 3600
 
-    local variationReduced = 1+0.5*math.sin(variation/90)
-    local value = min + max * variationReduced / (1+(math.abs (c - offsetReduced/a))^(2*b))
-    local sin = 2 * (math.abs(math.sin(value) * (math.sin(value*c)))*1000)
+    local variationReduced = 1 + 0.5 * math.sin(variation / 90)
+    local value = min + max * variationReduced /
+                      (1 + (math.abs(c - offsetReduced / a)) ^ (2 * b))
+    local sin = 2 * (math.abs(math.sin(value) * (math.sin(value * c))) * 1000)
 
     -- local intvalue = math.floor(sin * 2+0.5) / 10^2
-    return math.floor(sin * 2+0.5) / 10^2
+    return math.floor(sin * 2 + 0.5) / 10 ^ 2
 end
 
 local log_level = none
@@ -26,103 +27,302 @@ local threadCount = 0
 local requestCount = {}
 
 local requestTypes = {}
-table.insert(requestTypes,{weight = 2, type = 'mainPage'})
-table.insert(requestTypes,{weight = 4, type = 'loginPage'})
-table.insert(requestTypes,{weight = 1 * curvePattern(), type = 'casAttacks'})
-table.insert(requestTypes,{weight = 10, type = 'tradingPage'})
+table.insert(requestTypes, {weight = 2, type = 'mainPage'})
+table.insert(requestTypes, {weight = 4, type = 'loginPage'})
+table.insert(requestTypes, {weight = 1 * curvePattern(), type = 'casAttacks'})
+table.insert(requestTypes, {weight = 10, type = 'tradingPage'})
 
 local casAttacks = {}
-table.insert(casAttacks,{weight = 1, method = 'GET', path = '/?v=<script>'})
-table.insert(casAttacks,{weight = 1, method = 'GET', path = '/?v=SELECT FROM DUAL'})
-table.insert(casAttacks,{weight = 10, method = 'GET', path = '/wp-admin/admin-post.php?do_reset_wordpress'})
-table.insert(casAttacks,{weight = 1, method = 'GET', path = '/one/../object.html'})
-table.insert(casAttacks,{weight = 4, method = 'POST', path = '/trading/login.php', body = '{ "name" : }}"String.fromCharCode" }'})
-table.insert(casAttacks,{weight = 1, method = 'POST', path = '/xml_profile', body = '<?xml version="1.0"?><envelope><subject>Your order <num>1032</num></subject><letter>Dear Mr.<name>John Smith</>.Your order <orderid>1032</orderid>will be &lt;sCript shipped on <shipdate>2001-07-13</shipdate>. </letter><logo>image.gif</logo></envelope>'})
+
+-- Blocks
+table.insert(casAttacks, {weight = 1, method = 'GET', path = '/?v=<script>'})
+table.insert(casAttacks,
+             {weight = 1, method = 'GET', path = '/?v=SELECT FROM DUAL'})
+table.insert(casAttacks, {
+    weight = 10,
+    method = 'GET',
+    path = '/wp-admin/admin-post.php?do_reset_wordpress'
+})
+table.insert(casAttacks,
+             {weight = 1, method = 'GET', path = '/one/../object.html'})
+table.insert(casAttacks, {
+    weight = 4,
+    method = 'POST',
+    path = '/trading/login.php',
+    body = '{ "name" : }}"String.fromCharCode" }'
+})
+table.insert(casAttacks, {
+    weight = 1,
+    method = 'POST',
+    path = '/xml_profile',
+    body = '<?xml version="1.0"?><envelope><subject>Your order <num>1032</num></subject><letter>Dear Mr.<name>John Smith</>.Your order <orderid>1032</orderid>will be &lt;sCript shipped on <shipdate>2001-07-13</shipdate>. </letter><logo>image.gif</logo></envelope>'
+})
+
+-- Alarms
+table.insert(casAttacks, {
+    weight = 4,
+    method = 'POST',
+    contentType = 'application/json',
+    path = '/',
+    body = '[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]'
+})
+
+table.insert(casAttacks, {
+    weight = 4,
+    method = 'POST',
+    contentType = 'application/json',
+    path = '/',
+    body = '[1,[2,[3,[4,[5,[6,[7,[8,[9,[10,[11,[12,[13,[14,[15,[16,[17,[18,[19,[20,[21,[22,[23,[24,[25,[26,[27]]]]]]]]]]]]]]]]]]]]]]]]]]]'
+})
+
+table.insert(casAttacks, {
+    weight = 4,
+    method = 'POST',
+    contentType = 'application/xml',
+    path = '/',
+    body = '<note><to attr1="value" attr2="value" attr3="value" attr4="value" attr5="value" attr6="value" attr7="value" attr8="value" attr9="value" attr10="value" attr11="value" attr12="value" attr13="value" attr14="value" attr15="value" attr16="value" attr17="value" attr18="value" attr19="value" attr20="value" attr21="value" attr22="value" attr23="value" attr24="value" attr25="value" attr26="value" attr27="value" attr28="value" attr29="value" attr30="value" attr31="value" attr32="value" attr33="value">Tove</to><from>Jani</from><heading>Reminder</heading><body>Do not forget me this weekend!</body></note>'
+})
+
+table.insert(casAttacks, {
+    weight = 4,
+    method = 'POST',
+    contentType = 'application/xml',
+    path = '/',
+    body = '[1,[2,[3,[4,[5,[6,[7,[8,[9,[10,[11,[12,[13,[14,[15,[16,[17,[18,[19,[20,[21,[22,[23,[24,[25,[26,[27]]]]]]]]]]]]]]]]]]]]]]]]]]]'
+})
 
 local mainPage = {}
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/favicon.ico'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/slider/slide-img-3.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/section-1-bg.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/thumb-img1.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/foot-brand.png'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/image7.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/image6.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/image5.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/image4.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/image3.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/image2.jpg'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/plugins/shuffle/jquery.shuffle.modernizr.min.js'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/custom.js'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/plugins/magnific-popup/jquery.magnific-popup.min.js'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/plugins/owl-carousel/owl.carousel.js'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/plugins/backstretch/jquery.backstretch.min.js'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/bootstrap.min.js'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/jquery-3.3.1.min.js'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/popper.min.js'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/css/style.css'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/js/plugins/owl-carousel/owl.theme.css'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/images/logo0.png'})
-table.insert(mainPage,{weight = 1, method = 'GET', path = '/css/responsive.css'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/favicon.ico'})
+table.insert(mainPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/images/slider/slide-img-3.jpg'
+})
+table.insert(mainPage,
+             {weight = 1, method = 'GET', path = '/images/section-1-bg.jpg'})
+table.insert(mainPage,
+             {weight = 1, method = 'GET', path = '/images/thumb-img1.jpg'})
+table.insert(mainPage,
+             {weight = 1, method = 'GET', path = '/images/foot-brand.png'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/images/image7.jpg'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/images/image6.jpg'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/images/image5.jpg'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/images/image4.jpg'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/images/image3.jpg'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/images/image2.jpg'})
+table.insert(mainPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/js/plugins/shuffle/jquery.shuffle.modernizr.min.js'
+})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/js/custom.js'})
+table.insert(mainPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/js/plugins/magnific-popup/jquery.magnific-popup.min.js'
+})
+table.insert(mainPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/js/plugins/owl-carousel/owl.carousel.js'
+})
+table.insert(mainPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/js/plugins/backstretch/jquery.backstretch.min.js'
+})
+table.insert(mainPage,
+             {weight = 1, method = 'GET', path = '/js/bootstrap.min.js'})
+table.insert(mainPage,
+             {weight = 1, method = 'GET', path = '/js/jquery-3.3.1.min.js'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/js/popper.min.js'})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/css/style.css'})
+table.insert(mainPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/js/plugins/owl-carousel/owl.theme.css'
+})
+table.insert(mainPage, {weight = 1, method = 'GET', path = '/images/logo0.png'})
+table.insert(mainPage,
+             {weight = 1, method = 'GET', path = '/css/responsive.css'})
 
 local loginPage = {}
-table.insert(loginPage,{weight = 1, method = 'GET', path = '/trading/favicon.png'})
-table.insert(loginPage,{weight = 1, method = 'GET', path = '/trading/img/bg-pattern2.png'})
-table.insert(loginPage,{weight = 1, method = 'GET', path = '/trading/css/main.css', params = { version = '4.4.0' }})
-table.insert(loginPage,{weight = 1, method = 'GET', path = '/trading/img/logo10.png'})
-table.insert(loginPage,{weight = 1, method = 'GET', path = '/trading/login.php'})
-table.insert(loginPage,{weight = 1, method = 'POST', path = '/trading/login.php', body = 'username=admin&password=iloveblue'})
-
+table.insert(loginPage,
+             {weight = 1, method = 'GET', path = '/trading/favicon.png'})
+table.insert(loginPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/img/bg-pattern2.png'
+})
+table.insert(loginPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/css/main.css',
+    params = {version = '4.4.0'}
+})
+table.insert(loginPage,
+             {weight = 1, method = 'GET', path = '/trading/img/logo10.png'})
+table.insert(loginPage,
+             {weight = 1, method = 'GET', path = '/trading/login.php'})
+table.insert(loginPage, {
+    weight = 1,
+    method = 'POST',
+    path = '/trading/login.php',
+    body = 'username=admin&password=iloveblue'
+})
 
 local tradingPage = {}
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/img/cta-pattern-light.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/api/side_bar_accounts.php'})
-table.insert(tradingPage,{weight = 5, method = 'GET', path = '/api/side_bar.php'})
-table.insert(tradingPage,{weight = 5, method = 'GET', path = '/api/lower_bar.php'})
-table.insert(tradingPage,{weight = 5, method = 'GET', path = '/app3/index.php'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/js/main.js', params = { version = '4.4.0' }})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/js/plugins/countdown/jquery.downCount.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/js/demo_customizer.js', params = { version = '4.4.0' }})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap/js/dist/tab.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap/js/dist/modal.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap/js/dist/collapse.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap/js/dist/button.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap/js/dist/alert.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap/js/dist/util.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/dropzone/dist/dropzone.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap-daterangepicker/daterangepicker.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap-validator/dist/validator.min.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/chart.js/dist/Chart.min.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/cta-pattern-light.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/email_sent.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/loading.gif'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/failed.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/jquery/dist/jquery.min.js'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/question_mark.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/Bart.jpg'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/Or.jpg'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/Alfredo.jpg'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/card1.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/card2.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/card3.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/Vincent.jpg'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/Phillipe.jpg'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/img/logo9.png'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/icon_fonts_assets/picons-thin/style.css'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/css/additional.css'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/css/main.css', params = { version = '4.4.0' }})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/perfect-scrollbar/css/perfect-scrollbar.min.css'})
-table.insert(tradingPage,{weight = 1, method = 'GET', path = '/trading/bower_components/bootstrap-daterangepicker/daterangepicker.css'})
-table.insert(tradingPage,{weight = 5, method = 'GET', path = '/trading/index.php'})
-
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/img/cta-pattern-light.png'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/api/side_bar_accounts.php'})
+table.insert(tradingPage,
+             {weight = 5, method = 'GET', path = '/api/side_bar.php'})
+table.insert(tradingPage,
+             {weight = 5, method = 'GET', path = '/api/lower_bar.php'})
+table.insert(tradingPage, {weight = 5, method = 'GET', path = '/app3/index.php'})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/js/main.js',
+    params = {version = '4.4.0'}
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/js/plugins/countdown/jquery.downCount.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/js/demo_customizer.js',
+    params = {version = '4.4.0'}
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap/js/dist/tab.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap/js/dist/modal.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap/js/dist/collapse.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap/js/dist/button.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap/js/dist/alert.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap/js/dist/util.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/dropzone/dist/dropzone.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap-daterangepicker/daterangepicker.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap-validator/dist/validator.min.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/chart.js/dist/Chart.min.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/img/cta-pattern-light.png'
+})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/email_sent.png'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/loading.gif'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/failed.png'})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/jquery/dist/jquery.min.js'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/img/question_mark.png'
+})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/Bart.jpg'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/Or.jpg'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/Alfredo.jpg'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/card1.png'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/card2.png'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/card3.png'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/Vincent.jpg'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/Phillipe.jpg'})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/img/logo9.png'})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/icon_fonts_assets/picons-thin/style.css'
+})
+table.insert(tradingPage,
+             {weight = 1, method = 'GET', path = '/trading/css/additional.css'})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/css/main.css',
+    params = {version = '4.4.0'}
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/perfect-scrollbar/css/perfect-scrollbar.min.css'
+})
+table.insert(tradingPage, {
+    weight = 1,
+    method = 'GET',
+    path = '/trading/bower_components/bootstrap-daterangepicker/daterangepicker.css'
+})
+table.insert(tradingPage,
+             {weight = 5, method = 'GET', path = '/trading/index.php'})
 
 function weightedFilter(obj)
     local weights = 0;
     local newObj = {}
-    for k,v in pairs(obj) do
-      if v.weight > 0 then
-        table.insert(newObj,v)
-      end
+    for k, v in pairs(obj) do
+        if v.weight > 0 then table.insert(newObj, v) end
     end
     return newObj
 end
@@ -131,22 +331,16 @@ function weightedSearch(obj)
     if #obj > 0 then
         obj = weightedFilter(obj)
         local weights = 0
-        for k,v in pairs(obj) do
-          weights = weights + (v.weight*100)
-        end
+        for k, v in pairs(obj) do weights = weights + (v.weight * 100) end
 
         local random = math.random(weights)
 
-        for k,v in pairs(obj) do
-            random = random - (v.weight*100)
-            if random <= 0 then
-                return(v)
-            end
+        for k, v in pairs(obj) do
+            random = random - (v.weight * 100)
+            if random <= 0 then return (v) end
         end
     else
-        for k,v in pairs(obj) do
-            return(v)
-        end
+        for k, v in pairs(obj) do return (v) end
     end
 end
 
@@ -160,9 +354,7 @@ function getEndpoint(host)
             host.port = 80
         end
     end
-    if not host.addr then
-        host.addr = wrk.lookup(host.address,host.port)
-    end
+    if not host.addr then host.addr = wrk.lookup(host.address, host.port) end
     return host
 end
 
@@ -174,11 +366,11 @@ function setup(thread)
 end
 
 function init(args)
-    for k,v in pairs(args) do
-        local index = string.find(v,'=')
+    for k, v in pairs(args) do
+        local index = string.find(v, '=')
         if index then
-            local left = string.sub(v,0,index-1)
-            local right = string.sub(v,index+1)
+            local left = string.sub(v, 0, index - 1)
+            local right = string.sub(v, index + 1)
             if left == 'log_level' then log_level = right end
         end
     end
@@ -187,11 +379,11 @@ end
 
 function request()
     -- Cleanup WRK Values so that everything is fresh
-    wrk.method  = "GET"
-    wrk.path    = "/"
+    wrk.method = "GET"
+    wrk.path = "/"
     wrk.headers = {}
     wrk.headers['Host'] = wrk.host
-    wrk.body    = nil
+    wrk.body = nil
 
     local params = false
     local headers = false
@@ -213,42 +405,46 @@ function request()
     end
 
     wrk.method = request.method
-    if request.path then
-        path = request.path
+    if request.path then path = request.path end
+
+    if request.contentType then
+        wrk.headers['Content-Type'] = request.contentType
     end
 
     if request.body and (request.method == 'POST' or request.method == 'PUT') then
         wrk.body = request.body
     end
+
     if request.params then
-         for k,v in pairs(request.params) do
-             if not params then
-                 params = '?' .. k .. '=' .. v
-             else
-                 params = '&' .. k .. '=' .. v
-             end
-         end
-         path = path..params
-     end
-     if request.headers then
-         for k,v in pairs(request.headers) do
-             wrk.headers[k] = v
-         end
-     end
+        for k, v in pairs(request.params) do
+            if not params then
+                params = '?' .. k .. '=' .. v
+            else
+                params = '&' .. k .. '=' .. v
+            end
+        end
+        path = path .. params
+    end
+    if request.headers then
+        for k, v in pairs(request.headers) do wrk.headers[k] = v end
+    end
 
     wrk.path = path
 
     requests = requests + 1
 
     if log_level == 'request' then
-        print(requestType .. ' ' .. wrk.method .. ' ' .. wrk.scheme .. '://' .. wrk.host .. wrk.path)
+        print(requestType .. ' ' .. wrk.method .. ' ' .. wrk.scheme .. '://' ..
+                  wrk.host .. wrk.path)
     end
 
-    return wrk.format(nil,path)
+    return wrk.format(nil, path)
 end
 
 function response(status, headers, body)
     if log_level == 'response' then
-        print('('.. status .. ') ' .. wrk.method .. ' ' .. wrk.scheme .. '://' .. wrk.host .. wrk.path..'\r\n'..body)
+        print(
+            '(' .. status .. ') ' .. wrk.method .. ' ' .. wrk.scheme .. '://' ..
+                wrk.host .. wrk.path .. '\r\n' .. body)
     end
 end
