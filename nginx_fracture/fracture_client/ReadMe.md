@@ -8,7 +8,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen.lua' \
     -e wrkEndpoint='https://ratecalculator.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -18,7 +18,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen_Mortgage.lua' \
     -e wrkEndpoint='https://mortgage.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -28,7 +28,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen.lua' \
     -e wrkEndpoint='https://servicecenter.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ## East Load Gen
@@ -40,7 +40,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen_Mortgage_delay.lua' \
     -e wrkEndpoint='https://mortgage.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -50,7 +50,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen.lua' \
     -e wrkEndpoint='https://servicecenter.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 
 ```bash
 ## Generates load on prod trading app after deployment
@@ -60,7 +60,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen_Trading.lua' \
     -e wrkEndpoint='https://trading.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -70,7 +70,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen_Accounts-Internal.lua' \
     -e wrkEndpoint='https://accounts.internal.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -80,7 +80,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen.lua' \
     -e wrkEndpoint='https://ticketprocessing.internal.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -90,7 +90,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen.lua' \
     -e wrkEndpoint='https://merch.dev.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -100,7 +100,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen_WWW.lua' \
     -e wrkEndpoint='https://www.dev.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -110,7 +110,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen_Trading.lua' \
     -e wrkEndpoint='https://trading.dev.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -120,7 +120,7 @@ docker run -itd --net host --restart always \
     -e wrkMulti='3' \
     -e wrkScript='/usr/local/bin/loadGen_Trading_CAS.lua' \
     -e wrkEndpoint='https://trading.dev.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 -- Everything Below Here is used for testing of scripts, IGNORE --
@@ -131,7 +131,7 @@ docker run --rm -it --entrypoint /bin/bash \
     --add-host=accounts.internal.acmefinancial.net:10.1.10.113 \
     -e wrkEndpoint='https://accounts.internal.acmefinancial.net' \
     -v /home/ubuntu/entrypoint.sh:/usr/local/bin/entrypoint.sh \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 
 ```bash
@@ -142,7 +142,7 @@ docker run --rm -it --entrypoint /bin/bash \
     -v /home/ubuntu/loadGen_WWW.lua:/usr/local/bin/loadGen_WWW.lua \
     -v /home/ubuntu/entrypoint.sh:/usr/local/bin/entrypoint.sh \
     -e wrkEndpoint='https://www.dev.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
 ```bash
 
@@ -153,5 +153,5 @@ docker run --rm -it --entrypoint /bin/bash \
     -v /home/ubuntu/loadGen_Trading.lua:/usr/local/bin/loadGen_Trading.lua \
     -v /home/ubuntu/entrypoint.sh:/usr/local/bin/entrypoint.sh \
     -e wrkEndpoint='https://trading.dev.acmefinancial.net' \
-    rteller/wrk_fracture
+    aknot242/wrk_fracture
 ```
